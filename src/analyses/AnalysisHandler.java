@@ -7,6 +7,7 @@ import java.util.List;
 import org.prop4j.Node;
 
 import analyses.IFMAnalysis.Format;
+import de.ovgu.featureide.fm.core.analysis.cnf.formula.FeatureModelFormula;
 import de.ovgu.featureide.fm.core.base.IFeatureModel;
 import util.CnfTranslator;
 import util.FMUtils;
@@ -40,8 +41,9 @@ public class AnalysisHandler {
 
     public String evaluateFeatureModel(IFeatureModel model, int timeout) {
         String csvRow = "";
+        FeatureModelFormula formula = new FeatureModelFormula(model);
         for (IFMAnalysis analysis: analyses) {
-            csvRow += analysis.getResult(model) + ";";
+            csvRow += analysis.getResult(model, formula) + ";";
         }
         return csvRow.substring(0, csvRow.length() - 1) + "\n";
     }

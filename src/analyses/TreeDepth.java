@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.prop4j.Node;
 
+import de.ovgu.featureide.fm.core.analysis.cnf.formula.FeatureModelFormula;
 import de.ovgu.featureide.fm.core.base.IFeatureModel;
 import de.ovgu.featureide.fm.core.base.IFeatureStructure;
 
@@ -24,7 +25,7 @@ public class TreeDepth implements IFMAnalysis {
     }
 
     @Override
-    public String getResult(IFeatureModel featureModel) {
+    public String getResult(IFeatureModel featureModel, FeatureModelFormula formula) {
         return Integer.toString(getTreeDepthRecursive(featureModel.getStructure().getRoot()));
     }
     

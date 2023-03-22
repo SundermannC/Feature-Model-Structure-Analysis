@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 
 import org.prop4j.Node;
 
+import de.ovgu.featureide.fm.core.analysis.cnf.formula.FeatureModelFormula;
 import de.ovgu.featureide.fm.core.base.IFeatureModel;
 import de.ovgu.featureide.fm.core.io.dimacs.DimacsWriter;
 import util.BinaryRunner;
@@ -38,8 +39,8 @@ public class NumberOfValidConfigurations implements IFMAnalysis {
     }
 
     @Override
-    public String getResult(IFeatureModel featureModel) {
-		createTemporaryDimacs(featureModel.getAnalyser().getCnf());
+    public String getResult(IFeatureModel featureModel, FeatureModelFormula formula) {
+		createTemporaryDimacs(formula);
 		BinaryResult result = null;
 		result = executeSolver(TEMPORARY_DIMACS_PATH, 1);
 		if (result.status == Status.TIMEOUT) {
@@ -51,9 +52,9 @@ public class NumberOfValidConfigurations implements IFMAnalysis {
 		return "-2";
     }
 	
-	public static void createTemporaryDimacs(Node cnf) {
-		final DimacsWriter dWriter = new DimacsWriter();
-		final String dimacsContent = dWriter.write(cnf);
+	public static void createTemporaryDimacs(FeatureModelFormula formula) {
+		final DimacsWriter dWriter = new DimacsWriter(formula.getCNF());
+		final String dimacsContent = dWriter.write();
 		FileUtils.writeContentToFile(TEMPORARY_DIMACS_PATH, dimacsContent);
     }
     

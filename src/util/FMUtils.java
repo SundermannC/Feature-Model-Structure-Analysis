@@ -8,8 +8,10 @@ import java.util.Set;
 
 import org.prop4j.Node;
 
+import de.ovgu.featureide.fm.attributes.FMAttributesLibrary;
 import de.ovgu.featureide.fm.attributes.base.impl.ExtendedFeatureModelFactory;
 import de.ovgu.featureide.fm.attributes.format.XmlExtendedFeatureModelFormat;
+import de.ovgu.featureide.fm.core.analysis.cnf.formula.FeatureModelFormula;
 import de.ovgu.featureide.fm.core.base.IFeature;
 import de.ovgu.featureide.fm.core.base.IFeatureModel;
 import de.ovgu.featureide.fm.core.base.IFeatureStructure;
@@ -22,11 +24,13 @@ import de.ovgu.featureide.fm.core.configuration.EquationFormat;
 import de.ovgu.featureide.fm.core.configuration.ExpressionFormat;
 import de.ovgu.featureide.fm.core.configuration.FeatureIDEFormat;
 import de.ovgu.featureide.fm.core.configuration.XMLConfFormat;
+import de.ovgu.featureide.fm.core.init.FMCoreLibrary;
 import de.ovgu.featureide.fm.core.io.dimacs.DIMACSFormat;
 import de.ovgu.featureide.fm.core.io.dimacs.DimacsWriter;
 import de.ovgu.featureide.fm.core.io.manager.FeatureModelManager;
 import de.ovgu.featureide.fm.core.io.sxfm.SXFMFormat;
 import de.ovgu.featureide.fm.core.io.xml.XmlFeatureModelFormat;
+import de.ovgu.featureide.fm.core.job.monitor.NullMonitor;
 
 public class FMUtils {
 
@@ -34,7 +38,7 @@ public class FMUtils {
 	
 	
 	public static IFeatureModel readFeatureModel(String path) {
-		return FeatureModelManager.load(Paths.get(path)).getObject();
+		return FeatureModelManager.load(Paths.get(path));
 	}
 	
 	public static void saveFeatureModelAsDIMACS(IFeatureModel model, String savePath) {
@@ -43,13 +47,13 @@ public class FMUtils {
 
 
 	public static Node getCNF(IFeatureModel model) {
-		return model.getAnalyser().getCnf();
+		return new FeatureModelFormula(model).getCNFNode();
 	}
 
-	public static void saveCNF(Node cnf, String path) {
+	public static void saveCNF(FeatureModelFormula formula, String path) {
 		// clear if one exists
-		final DimacsWriter dWriter = new DimacsWriter();
-		final String dimacsContent = dWriter.write(cnf);
+		final DimacsWriter dWriter = new DimacsWriter(formula.getCNF());
+		final String dimacsContent = dWriter.write();
 		FileUtils.writeContentToFile(path.replaceFirst("[.][^.]+$", "") + ".dimacs", dimacsContent);
 	}
 	
@@ -57,18 +61,8 @@ public class FMUtils {
 
 	
 	public static void installLibraries() {
-		FMFactoryManager.getInstance().addExtension(DefaultFeatureModelFactory.getInstance());
-		FMFactoryManager.getInstance().addExtension(ExtendedFeatureModelFactory.getInstance());
-
-		FMFormatManager.getInstance().addExtension(new XmlFeatureModelFormat());
-		FMFormatManager.getInstance().addExtension(new XmlExtendedFeatureModelFormat());
-		FMFormatManager.getInstance().addExtension(new SXFMFormat());
-	
-		ConfigFormatManager.getInstance().addExtension(new XMLConfFormat());
-		ConfigFormatManager.getInstance().addExtension(new DefaultFormat());
-		ConfigFormatManager.getInstance().addExtension(new FeatureIDEFormat());
-		ConfigFormatManager.getInstance().addExtension(new EquationFormat());
-		ConfigFormatManager.getInstance().addExtension(new ExpressionFormat());
+		FMCoreLibrary.getInstance().install();
+		FMAttributesLibrary.getInstance().install();
 	}
 	
 	public static Set<String> getCoreFeatureNamesByTree(IFeatureModel model) {
@@ -88,16 +82,16 @@ public class FMUtils {
 		return coreAncestors;
 	}
 	
-	public static Set<IFeature> getCoreFeatures(IFeatureModel model) {
-		return new HashSet<>(model.getAnalyser().getCoreFeatures());
+	public static Set<IFeature> getCoreFeatures(FeatureModelFormula formula) {
+		return new HashSet<>(formula.getAnalyzer().getCoreFeatures(new NullMonitor<>()));
 	}
 	
-	public static Set<IFeature> getDeadFeatures(IFeatureModel model) {
-		return new HashSet<>(model.getAnalyser().getDeadFeatures());
+	public static Set<IFeature> getDeadFeatures(FeatureModelFormula formula) {
+		return new HashSet<>(formula.getAnalyzer().getDeadFeatures(new NullMonitor<>()));
 	}
 	
-	public static Set<IFeature> getFalseOptionalFeatures(IFeatureModel model) {
-		return new HashSet<>(model.getAnalyser().getFalseOptionalFeatures());
+	public static Set<IFeature> getFalseOptionalFeatures(FeatureModelFormula formula) {
+		return new HashSet<>(formula.getAnalyzer().getFalseOptionalFeatures(new NullMonitor<>()));
 	}
 	
 	public static IFeature getParent(IFeature feat) {

@@ -3,6 +3,7 @@ package analyses;
 import org.prop4j.Node;
 import org.prop4j.Or;
 
+import de.ovgu.featureide.fm.core.analysis.cnf.formula.FeatureModelFormula;
 import de.ovgu.featureide.fm.core.base.IFeatureModel;
 
 public class NumberOfLiterals implements IFMAnalysis {
@@ -21,8 +22,8 @@ public class NumberOfLiterals implements IFMAnalysis {
     }
 
     @Override
-    public String getResult(IFeatureModel featureModel) {
-        Node cnf = featureModel.getAnalyser().getCnf();
+    public String getResult(IFeatureModel featureModel, FeatureModelFormula formula) {
+        Node cnf = formula.getCNFNode();
         int numberOfLiterals = 0;
         for (Node clause : cnf.getChildren()) {
             if (!(clause instanceof Or)) {

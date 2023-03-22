@@ -2,6 +2,7 @@ package analyses;
 
 import org.prop4j.Node;
 
+import de.ovgu.featureide.fm.core.analysis.cnf.formula.FeatureModelFormula;
 import de.ovgu.featureide.fm.core.base.IFeatureModel;
 
 public class NumberOfClauses implements IFMAnalysis {
@@ -20,8 +21,8 @@ public class NumberOfClauses implements IFMAnalysis {
     }
 
     @Override
-    public String getResult(IFeatureModel featureModel) {
-        Node cnf = featureModel.getAnalyser().getCnf();
+    public String getResult(IFeatureModel featureModel, FeatureModelFormula formula) {
+        Node cnf = formula.getCNFNode();
         return Integer.toString(cnf.getChildren().length);
     }
 

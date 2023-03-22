@@ -8,15 +8,15 @@ import java.util.Vector;
 import org.prop4j.Node;
 import org.prop4j.Or;
 
-import de.ovgu.featureide.fm.core.base.IFeatureModel;
+import de.ovgu.featureide.fm.core.analysis.cnf.formula.FeatureModelFormula;
 
 public class ConnectivityGraph {
 
     private Map<String, Vertex> vertices;
 
-    public ConnectivityGraph(IFeatureModel featureModel) {
+    public ConnectivityGraph(FeatureModelFormula formula) {
         this.vertices = new HashMap<>();
-        initializeGraph(featureModel);
+        initializeGraph(formula);
     }
 
     public Vertex getVertex(String variable) {
@@ -27,8 +27,8 @@ public class ConnectivityGraph {
         vertices.put(variable, new Vertex(variable));
     }
 
-    private void initializeGraph(IFeatureModel featureModel) {
-        Node cnf = featureModel.getAnalyser().getCnf();
+    private void initializeGraph(FeatureModelFormula formula) {
+        Node cnf = formula.getCNFNode(); 
         for (Node clause : cnf.getChildren()) {
             handleClause(clause);
         }

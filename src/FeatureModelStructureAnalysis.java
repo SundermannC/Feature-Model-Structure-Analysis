@@ -45,9 +45,9 @@ public class FeatureModelStructureAnalysis {
 
 	private void initializeAnalyses() {
 		analysisHandler = new AnalysisHandler();
-		// analysisHandler.registerAnalysis(new NumberOfFeatures());
-		// analysisHandler.registerAnalysis(new NumberOfLeafFeatures());
-		// analysisHandler.registerAnalysis(new NumberOfTopFeatures());
+		analysisHandler.registerAnalysis(new NumberOfFeatures());
+		analysisHandler.registerAnalysis(new NumberOfLeafFeatures());
+		analysisHandler.registerAnalysis(new NumberOfTopFeatures());
 
 		// analysisHandler.registerAnalysis(new NumberOfConstraints());
 		// analysisHandler.registerAnalysis(new AverageConstraintSize());

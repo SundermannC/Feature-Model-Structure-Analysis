@@ -2,6 +2,7 @@ package analyses;
 
 import org.prop4j.Node;
 
+import de.ovgu.featureide.fm.core.analysis.cnf.formula.FeatureModelFormula;
 import de.ovgu.featureide.fm.core.base.IFeatureModel;
 
 public interface IFMAnalysis {
@@ -27,7 +28,7 @@ public interface IFMAnalysis {
      * @param featureModel
      * @return String to be saved in the csv for that model
      */
-    public String getResult(IFeatureModel featureModel);
+    public String getResult(IFeatureModel featureModel, FeatureModelFormula formula);
 
 
     /**

@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.prop4j.Node;
 
+import de.ovgu.featureide.fm.core.analysis.cnf.formula.FeatureModelFormula;
 import de.ovgu.featureide.fm.core.base.IConstraint;
 import de.ovgu.featureide.fm.core.base.IFeature;
 import de.ovgu.featureide.fm.core.base.IFeatureModel;
@@ -25,7 +26,7 @@ public class FeaturesInConstraintsDensity implements IFMAnalysis {
     }
 
     @Override
-    public String getResult(IFeatureModel featureModel) {
+    public String getResult(IFeatureModel featureModel, FeatureModelFormula formula) {
 		int numberOfFeatures = featureModel.getNumberOfFeatures();
 		
 		List<IConstraint> constraints = featureModel.getConstraints();
