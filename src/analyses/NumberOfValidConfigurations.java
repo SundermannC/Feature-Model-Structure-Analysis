@@ -14,6 +14,9 @@ import util.FileUtils;
 import util.BinaryRunner.BinaryResult;
 import util.BinaryRunner.Status;
 
+/**
+ * 
+ */
 public class NumberOfValidConfigurations implements IFMAnalysis {
 
 
@@ -23,10 +26,10 @@ public class NumberOfValidConfigurations implements IFMAnalysis {
     private static final String TEMPORARY_DIMACS_PATH = "temp.dimacs";
 
 
-    private static final String UNSAT_FLAG = "s UNSATISFIABLE";
+    private static final String UNSAT_FLAG = "s 0";
 
 
-    private final static String BINARY_PATH = "solvers" + File.separator + "countAntom";
+    private final static String BINARY_PATH = "solver" + File.separator + "d4";
 
     @Override
     public String getLabel() {
@@ -64,7 +67,7 @@ public class NumberOfValidConfigurations implements IFMAnalysis {
 	}
     
     private String buildCommand(String dimacsPath) {
-		return BINARY_PATH + " --memSize=" + 8000 + " --noThreads=" + 4 + " " + dimacsPath;
+		return BINARY_PATH + " -i " + dimacsPath + " -m counting";
     }
     
 
@@ -72,7 +75,7 @@ public class NumberOfValidConfigurations implements IFMAnalysis {
 		if (isUNSAT(output)) {
 			return "0";
 		}
-		final Pattern pattern = Pattern.compile("model count.*\\d*");
+		final Pattern pattern = Pattern.compile("^s \\d*", Pattern.MULTILINE);
 		final Matcher matcher = pattern.matcher(output);
 		String result = "";
 		if (matcher.find()) {

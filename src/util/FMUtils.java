@@ -9,27 +9,14 @@ import java.util.Set;
 import org.prop4j.Node;
 
 import de.ovgu.featureide.fm.attributes.FMAttributesLibrary;
-import de.ovgu.featureide.fm.attributes.base.impl.ExtendedFeatureModelFactory;
-import de.ovgu.featureide.fm.attributes.format.XmlExtendedFeatureModelFormat;
 import de.ovgu.featureide.fm.core.analysis.cnf.formula.FeatureModelFormula;
 import de.ovgu.featureide.fm.core.base.IFeature;
 import de.ovgu.featureide.fm.core.base.IFeatureModel;
 import de.ovgu.featureide.fm.core.base.IFeatureStructure;
-import de.ovgu.featureide.fm.core.base.impl.ConfigFormatManager;
-import de.ovgu.featureide.fm.core.base.impl.DefaultFeatureModelFactory;
-import de.ovgu.featureide.fm.core.base.impl.FMFactoryManager;
-import de.ovgu.featureide.fm.core.base.impl.FMFormatManager;
-import de.ovgu.featureide.fm.core.configuration.DefaultFormat;
-import de.ovgu.featureide.fm.core.configuration.EquationFormat;
-import de.ovgu.featureide.fm.core.configuration.ExpressionFormat;
-import de.ovgu.featureide.fm.core.configuration.FeatureIDEFormat;
-import de.ovgu.featureide.fm.core.configuration.XMLConfFormat;
 import de.ovgu.featureide.fm.core.init.FMCoreLibrary;
 import de.ovgu.featureide.fm.core.io.dimacs.DIMACSFormat;
 import de.ovgu.featureide.fm.core.io.dimacs.DimacsWriter;
 import de.ovgu.featureide.fm.core.io.manager.FeatureModelManager;
-import de.ovgu.featureide.fm.core.io.sxfm.SXFMFormat;
-import de.ovgu.featureide.fm.core.io.xml.XmlFeatureModelFormat;
 import de.ovgu.featureide.fm.core.job.monitor.NullMonitor;
 
 public class FMUtils {
@@ -38,7 +25,11 @@ public class FMUtils {
 	
 	
 	public static IFeatureModel readFeatureModel(String path) {
-		return FeatureModelManager.load(Paths.get(path));
+		IFeatureModel featureModel = null;
+		try {
+			featureModel = FeatureModelManager.load(Paths.get(path));
+		} catch (Exception e) {}
+		return featureModel;
 	}
 	
 	public static void saveFeatureModelAsDIMACS(IFeatureModel model, String savePath) {

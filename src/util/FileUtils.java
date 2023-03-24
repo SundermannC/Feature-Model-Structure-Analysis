@@ -158,6 +158,16 @@ public class FileUtils {
 		}
 	}
 
+	public static void appendContentToFile(String path, String content) {
+		try {
+			final BufferedWriter writer = new BufferedWriter(new FileWriter(path, true));
+			writer.write(content);
+			writer.close();
+		} catch (final IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public static void createDirIfItDoesntExist(String dirName) {
 		File dirs = new File(dirName);
 		if (!dirs.exists()) dirs.mkdirs();

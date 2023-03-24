@@ -10,6 +10,8 @@ public class FeatureModelStructureAnalysis {
 	AnalysisHandler analysisHandler;
 	int timeout;
 
+	private static final int UPDATE_CSV_INTERVALL = 5;
+
 	public FeatureModelStructureAnalysis() {
 		initializeAnalyses();
 		timeout = 30;
@@ -24,17 +26,25 @@ public class FeatureModelStructureAnalysis {
 			return;
 		}
 
-		List<File> files = FileUtils.getFileListWithExtension(args[0], "xml");
+		List<File> files = FileUtils.getFileList(args[0]);
 
 		analysis.handleFiles(files, args[0], args.length == 1 ? "result.csv" : args[1]);
 	}
 
 	private void handleFiles(List<File> files, String inputPath, String outputfile) {
 		String csvContent = analysisHandler.getCsvHeader();
+		FileUtils.writeContentToFile(outputfile, csvContent);
+		csvContent = "";
+
+		int lastUpdate = 0;
 		for (File file : files) {
 			csvContent += handleFile(file, inputPath);
+			if (++lastUpdate >= UPDATE_CSV_INTERVALL) {
+				FileUtils.appendContentToFile(outputfile, csvContent);
+				csvContent = "";
+				lastUpdate = 0;
+			}
 		}
-		FileUtils.writeContentToFile(outputfile, csvContent);
 
 	}
 
@@ -49,24 +59,24 @@ public class FeatureModelStructureAnalysis {
 		analysisHandler.registerAnalysis(new NumberOfLeafFeatures());
 		analysisHandler.registerAnalysis(new NumberOfTopFeatures());
 
-		// analysisHandler.registerAnalysis(new NumberOfConstraints());
+		analysisHandler.registerAnalysis(new NumberOfConstraints());
 		// analysisHandler.registerAnalysis(new AverageConstraintSize());
-		// analysisHandler.registerAnalysis(new CtcDensity());
+		analysisHandler.registerAnalysis(new CtcDensity());
 		// analysisHandler.registerAnalysis(new FeaturesInConstraintsDensity());
 		analysisHandler.registerAnalysis(new RatioOfOptionalFeatures());
 
-		// analysisHandler.registerAnalysis(new TreeDepth());
-		// analysisHandler.registerAnalysis(new AverageNumberOfChilden());
+		analysisHandler.registerAnalysis(new TreeDepth());
+		analysisHandler.registerAnalysis(new AverageNumberOfChilden());
 
-		// analysisHandler.registerAnalysis(new NumberOfClauses());
-		analysisHandler.registerAnalysis(new NumberOfLiterals());
-		// analysisHandler.registerAnalysis(new ClauseDensity());
+		// // analysisHandler.registerAnalysis(new NumberOfClauses());
+		// analysisHandler.registerAnalysis(new NumberOfLiterals());
+		// // analysisHandler.registerAnalysis(new ClauseDensity());
 
 		// analysisHandler.registerAnalysis(new NumberOfValidConfigurations());
-		analysisHandler.registerAnalysis(new ConnectivityDensity());
+		// analysisHandler.registerAnalysis(new ConnectivityDensity());
 
-		analysisHandler.registerAnalysis(new SimpleCyclomaticComplexity());
-		analysisHandler.registerAnalysis(new IndependentCyclomaticComplexity());
+		// analysisHandler.registerAnalysis(new SimpleCyclomaticComplexity());
+		// analysisHandler.registerAnalysis(new IndependentCyclomaticComplexity());
 	}
 
 }

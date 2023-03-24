@@ -26,6 +26,10 @@ public class AnalysisHandler {
 
 
     public String evaluateFmFile(File file, int timeout, String inputPath) {
+        IFeatureModel featureModel = FMUtils.readFeatureModel(file.getPath());
+        if (featureModel == null) {
+            return getCleanName(file, inputPath) + getFailRow();
+        }
         return getCleanName(file, inputPath) + ";" + evaluateFeatureModel(FMUtils.readFeatureModel(file.getPath()), timeout);
     }
 
@@ -35,8 +39,9 @@ public class AnalysisHandler {
 
 
     private String getCleanName(File file, String inputPath) {
-        String[] split = file.getAbsolutePath().split(inputPath);
-        return split[split.length -1];
+        String[] pathSplit = file.getAbsolutePath().split(File.separator);
+        String[] extensionSplit = pathSplit[pathSplit.length - 1].split("\\.");
+        return extensionSplit[0];
     }
 
     public String evaluateFeatureModel(IFeatureModel model, int timeout) {
@@ -65,6 +70,15 @@ public class AnalysisHandler {
         }
 
         return headerRow.substring(0, headerRow.length() - 1) + "\n";
+    }
+
+    public String getFailRow() {
+        String failRow = "";
+        for (int i = 0; i < analyses.size() - 2; i++) {
+            failRow = failRow + ";";
+        }
+        failRow = failRow + "\n";
+        return failRow;
     }
 
 }
