@@ -11,6 +11,7 @@ import de.ovgu.featureide.fm.core.analysis.cnf.formula.FeatureModelFormula;
 import de.ovgu.featureide.fm.core.base.IFeatureModel;
 import util.CnfTranslator;
 import util.FMUtils;
+import util.FileUtils;
 
 public class AnalysisHandler {
     
@@ -39,9 +40,7 @@ public class AnalysisHandler {
 
 
     private String getCleanName(File file, String inputPath) {
-        String[] pathSplit = file.getAbsolutePath().split(File.separator);
-        String[] extensionSplit = pathSplit[pathSplit.length - 1].split("\\.");
-        return extensionSplit[0];
+        return FileUtils.getFileNameWithoutExtension(file.getAbsolutePath());
     }
 
     public String evaluateFeatureModel(IFeatureModel model, int timeout) {

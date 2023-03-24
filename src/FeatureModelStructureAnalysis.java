@@ -45,7 +45,7 @@ public class FeatureModelStructureAnalysis {
 				lastUpdate = 0;
 			}
 		}
-
+		FileUtils.appendContentToFile(outputfile, csvContent); // Add last partial batch
 	}
 
 	private String handleFile(File file, String inputPath) {

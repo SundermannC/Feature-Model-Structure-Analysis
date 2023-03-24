@@ -30,7 +30,7 @@ public class FileUtils {
 	public static String getFileNameWithoutExtension(String filePath) {
 		if (filePath.contains("/"))  {
 			String[] split = filePath.split("/");
-			filePath = split[split.length -1];
+			filePath = split[split.length - 1];
 		}
 		if (filePath.contains(".")) filePath = filePath.substring(0, filePath.lastIndexOf('.'));
 		return filePath;
