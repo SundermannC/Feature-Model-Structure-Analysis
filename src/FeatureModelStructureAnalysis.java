@@ -49,7 +49,7 @@ public class FeatureModelStructureAnalysis {
 	}
 
 	private String handleFile(File file, String inputPath) {
-		System.out.println("Handling " + file.getName());
+		System.out.println("Handling " + file.getPath());
 		return analysisHandler.evaluateFmFile(file, timeout, inputPath);
 	}
 
@@ -60,10 +60,11 @@ public class FeatureModelStructureAnalysis {
 		analysisHandler.registerAnalysis(new NumberOfTopFeatures());
 
 		analysisHandler.registerAnalysis(new NumberOfConstraints());
-		// analysisHandler.registerAnalysis(new AverageConstraintSize());
+		analysisHandler.registerAnalysis(new AverageConstraintSize());
 		analysisHandler.registerAnalysis(new CtcDensity());
-		// analysisHandler.registerAnalysis(new FeaturesInConstraintsDensity());
+		analysisHandler.registerAnalysis(new FeaturesInConstraintsDensity());
 		analysisHandler.registerAnalysis(new RatioOfOptionalFeatures());
+		analysisHandler.registerAnalysis(new ConnectivityDensity());
 
 		analysisHandler.registerAnalysis(new TreeDepth());
 		analysisHandler.registerAnalysis(new AverageNumberOfChilden());
@@ -72,8 +73,11 @@ public class FeatureModelStructureAnalysis {
 		// analysisHandler.registerAnalysis(new NumberOfLiterals());
 		// // analysisHandler.registerAnalysis(new ClauseDensity());
 
-		// analysisHandler.registerAnalysis(new NumberOfValidConfigurations());
-		// analysisHandler.registerAnalysis(new ConnectivityDensity());
+		analysisHandler.registerAnalysis(new VoidModel());
+		analysisHandler.registerAnalysis(new NumberOfCoreFeatures());
+		analysisHandler.registerAnalysis(new NumberOfDeadFeatures());
+
+		analysisHandler.registerAnalysis(new NumberOfValidConfigurations());
 
 		// analysisHandler.registerAnalysis(new SimpleCyclomaticComplexity());
 		// analysisHandler.registerAnalysis(new IndependentCyclomaticComplexity());

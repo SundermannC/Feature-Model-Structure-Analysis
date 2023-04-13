@@ -29,15 +29,14 @@ public class AnalysisHandler {
     public String evaluateFmFile(File file, int timeout, String inputPath) {
         IFeatureModel featureModel = FMUtils.readFeatureModel(file.getPath());
         if (featureModel == null) {
-            return getCleanName(file, inputPath) + getFailRow();
+            return file.getPath() + getFailRow();
         }
-        return getCleanName(file, inputPath) + ";" + evaluateFeatureModel(FMUtils.readFeatureModel(file.getPath()), timeout);
+        return file.getPath() + ";" + evaluateFeatureModel(FMUtils.readFeatureModel(file.getPath()), timeout);
     }
 
     public String evaluateDimacsFile(File file, int timeout, String inputPath) {
-        return getCleanName(file, inputPath) + ";" + evaluateCNF(CnfTranslator.readDimacs(file.getPath()), timeout);
+        return file.getPath() + ";" + evaluateCNF(CnfTranslator.readDimacs(file.getPath()), timeout);
     }
-
 
     private String getCleanName(File file, String inputPath) {
         return FileUtils.getFileNameWithoutExtension(file.getAbsolutePath());

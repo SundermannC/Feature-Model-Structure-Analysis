@@ -4,11 +4,11 @@ import org.prop4j.Node;
 
 import de.ovgu.featureide.fm.core.analysis.cnf.formula.FeatureModelFormula;
 import de.ovgu.featureide.fm.core.base.IFeatureModel;
+import util.FMUtils;
 
-public class NumberOfConstraints implements IFMAnalysis {
+public class VoidModel implements IFMAnalysis {
 
-    private static final String LABEL = "#Constraints";
-
+    private static final String LABEL = "Void";
     @Override
     public String getLabel() {
         return LABEL;
@@ -21,17 +21,16 @@ public class NumberOfConstraints implements IFMAnalysis {
 
     @Override
     public String getResult(IFeatureModel featureModel, FeatureModelFormula formula) {
-        return Integer.toString(featureModel.getConstraintCount());
+        return String.valueOf(FMUtils.isVoid(formula));
     }
 
     @Override
     public String getResult(Node node) {
-        return null;
+        return "";
     }
 
     @Override
     public boolean supportsFormat(Format format) {
-        // TODO Auto-generated method stub
         return false;
     }
     

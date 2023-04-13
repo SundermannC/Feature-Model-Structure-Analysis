@@ -72,6 +72,10 @@ public class FMUtils {
 		}
 		return coreAncestors;
 	}
+
+	public static boolean isVoid(FeatureModelFormula formula) {
+		return formula.getAnalyzer().isValid(new NullMonitor<>());
+	}
 	
 	public static Set<IFeature> getCoreFeatures(FeatureModelFormula formula) {
 		return new HashSet<>(formula.getAnalyzer().getCoreFeatures(new NullMonitor<>()));

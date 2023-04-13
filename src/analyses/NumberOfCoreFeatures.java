@@ -4,10 +4,11 @@ import org.prop4j.Node;
 
 import de.ovgu.featureide.fm.core.analysis.cnf.formula.FeatureModelFormula;
 import de.ovgu.featureide.fm.core.base.IFeatureModel;
+import util.FMUtils;
 
-public class NumberOfConstraints implements IFMAnalysis {
+public class NumberOfCoreFeatures implements IFMAnalysis  {
 
-    private static final String LABEL = "#Constraints";
+    private static final String LABEL = "#CORE";
 
     @Override
     public String getLabel() {
@@ -21,7 +22,7 @@ public class NumberOfConstraints implements IFMAnalysis {
 
     @Override
     public String getResult(IFeatureModel featureModel, FeatureModelFormula formula) {
-        return Integer.toString(featureModel.getConstraintCount());
+        return String.valueOf(FMUtils.getCoreFeatures(formula).size());
     }
 
     @Override
@@ -31,7 +32,6 @@ public class NumberOfConstraints implements IFMAnalysis {
 
     @Override
     public boolean supportsFormat(Format format) {
-        // TODO Auto-generated method stub
         return false;
     }
     
